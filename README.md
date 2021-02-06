@@ -24,7 +24,7 @@ This Employee Directory presents a list of employees with their profile picture,
 This website quick display a list of employees that can be sorted ascending or descending by name, phone number, email, or date of birthday clicking on the arrows located on the table headers. You can also narrow your employee list using the search bar to search by first name or last name. 
 
 ## Link
-[Employee Directory](https://https://mimila-85.github.io/employee-directory/)
+[Employee Directory](https://mimila-85.github.io/employee-directory/)
 
 ## Demo
 ![Employee Directory](https://github.com/Mimila-85/employee-directory/blob/master/public/assets/images/employeeDirectoryDemo.gif)

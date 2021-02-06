@@ -12,7 +12,7 @@ class EmployeeContainer extends Component {
         sort: {
             column: null,
             direction: "desc",
-            icon: "fas fa-sort-alpha-down-alt"
+            icon: "fas fa-sort-up"
         }
     }
 
@@ -20,7 +20,7 @@ class EmployeeContainer extends Component {
         API.search()
             .then(res => this.setState({ results: res.data.results }))
             .catch(err => console.log(err));
-        this.setState({icon: "fas fa-sort-alpha-down-alt"}); 
+        this.setState({icon: "fas fa-sort-up"}); 
     }
 
     handleInputChange = event => {
@@ -31,10 +31,11 @@ class EmployeeContainer extends Component {
         })
     }
 
-    sortName = (column) => {
+    sortFunction = (column) => {
+
         let sortDirection = this.state.sort.direction;
         sortDirection = sortDirection === "desc" ? "asc" : "desc";
-        let setIcon = sortDirection === "desc" ? "fas fa-sort-alpha-down-alt" : "fas fa-sort-alpha-down";
+        let setIcon = sortDirection === "desc" ? "fas fa-sort-up" : "fas fa-sort-down";
         this.setState({icon: setIcon});
         const sortResult = this.state.results.sort((a,b) => {
             if (column === "Name"){
@@ -47,7 +48,30 @@ class EmployeeContainer extends Component {
                 // nameA must be equal to nameB
                 return 0;
             }
+            if (column === "Email"){
+                const nameA = a.email.toLowerCase();
+                const nameB = b.email.toLowerCase();
+                // nameA is less than nameB by some ordering criterion
+                if (nameA > nameB) return -1;
+                // nameB is less than nameA by some ordering criterion
+                if (nameB > nameA) return 1;
+                // nameA must be equal to nameB
+                return 0;
+            }
+            if (column === "Phone"){
+                const numA = parseInt(a.phone.replace(/[^0-9]/g, ''), 10);
+                const numB = parseInt(b.phone.replace(/[^0-9]/g, ''), 10);
+                //To compare numbers instead of strings, the compare function can subtract b from a. The following function will sort the array in ascending order.
+                return numA - numB;
+            }
+            if (column === "DOB"){
+                const numA = parseInt(a.dob.date.replace(/[^0-9]/g, ''), 10);
+                const numB = parseInt(b.dob.date.replace(/[^0-9]/g, ''), 10);
+                //To compare numbers instead of strings, the compare function can subtract b from a. The following function will sort the array in ascending order.
+                return numA - numB;
+            }
         });
+       
         if (sortDirection === "desc"){
             sortResult.reverse();
         }
@@ -67,14 +91,14 @@ class EmployeeContainer extends Component {
             <div>
                 <Jumbotron
                     heading="Employee Directory"
-                    subHeading="Click on the column Name to Sort Names by Ascending or Descending or use the search box to narrow your results."
+                    subHeading="Click on the arrows to sort each column by ascending or descending or use the search box to narrow your results."
                 />
                 <SearchForm
                     value={this.state.search}
                     handleInputChange={this.handleInputChange}
                 />
                 <EmployeeList
-                    sortName={this.sortName}
+                    sortFunction={this.sortFunction}
                     icon={this.state.icon}
                     results={searchResult}
                 />

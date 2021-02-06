@@ -38,38 +38,39 @@ class EmployeeContainer extends Component {
         let setIcon = sortDirection === "desc" ? "fas fa-sort-up" : "fas fa-sort-down";
         this.setState({icon: setIcon});
         const sortResult = this.state.results.sort((a,b) => {
-            if (column === "Name"){
-                const nameA = a.name.first.toLowerCase();
-                const nameB = b.name.first.toLowerCase();
-                // nameA is less than nameB by some ordering criterion
-                if (nameA > nameB) return -1;
-                // nameB is less than nameA by some ordering criterion
-                if (nameB > nameA) return 1;
-                // nameA must be equal to nameB
+            switch (column) {
+                case "Name":
+                    const nameA = a.name.first.toLowerCase();
+                    const nameB = b.name.first.toLowerCase();
+                    // nameA is less than nameB by some ordering criterion
+                    if (nameA > nameB) return -1;
+                    // nameB is less than nameA by some ordering criterion
+                    if (nameB > nameA) return 1;
+                    // nameA must be equal to nameB
                 return 0;
-            }
-            if (column === "Email"){
-                const nameA = a.email.toLowerCase();
-                const nameB = b.email.toLowerCase();
-                // nameA is less than nameB by some ordering criterion
-                if (nameA > nameB) return -1;
-                // nameB is less than nameA by some ordering criterion
-                if (nameB > nameA) return 1;
-                // nameA must be equal to nameB
+                case "Email":
+                    const emailA = a.email.toLowerCase();
+                    const emailB = b.email.toLowerCase();
+                    // nameA is less than nameB by some ordering criterion
+                    if (emailA > emailB) return -1;
+                    // nameB is less than nameA by some ordering criterion
+                    if (emailB > emailA) return 1;
+                    // nameA must be equal to nameB
                 return 0;
-            }
-            if (column === "Phone"){
-                const numA = parseInt(a.phone.replace(/[^0-9]/g, ''), 10);
-                const numB = parseInt(b.phone.replace(/[^0-9]/g, ''), 10);
-                //To compare numbers instead of strings, the compare function can subtract b from a. The following function will sort the array in ascending order.
+                case "Phone":
+                    const numA = parseInt(a.phone.replace(/[^0-9]/g, ''), 10);
+                    const numB = parseInt(b.phone.replace(/[^0-9]/g, ''), 10);
+                    //To compare numbers instead of strings, the compare function can subtract b from a. The following function will sort the array in ascending order.
                 return numA - numB;
+                case "DOB":
+                    const dobA = parseInt(a.dob.date.replace(/[^0-9]/g, ''), 10);
+                    const dobB = parseInt(b.dob.date.replace(/[^0-9]/g, ''), 10);
+                    //To compare numbers instead of strings, the compare function can subtract b from a. The following function will sort the array in ascending order.
+                return dobA - dobB;
+                default:
+                    break;
             }
-            if (column === "DOB"){
-                const numA = parseInt(a.dob.date.replace(/[^0-9]/g, ''), 10);
-                const numB = parseInt(b.dob.date.replace(/[^0-9]/g, ''), 10);
-                //To compare numbers instead of strings, the compare function can subtract b from a. The following function will sort the array in ascending order.
-                return numA - numB;
-            }
+            
         });
        
         if (sortDirection === "desc"){
